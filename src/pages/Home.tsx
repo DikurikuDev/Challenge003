@@ -2,8 +2,14 @@ import React, { useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 
 import { Header } from '../components/Header';
-import { Task, TasksList } from '../components/TasksList';
+import { TasksList } from '../components/TasksList';
 import { TodoInput } from '../components/TodoInput';
+
+interface Task {
+  id: number;
+  title: string;
+  done: boolean;
+}
 
 export function Home() {
   const [tasks, setTasks] = useState<Task[]>([]);
@@ -17,6 +23,13 @@ export function Home() {
       title: newTaskTitle,
       done: false
     }]);
+  }
+
+  function handleEditTask(id: number, newTaskTitle: string) {
+    setTasks(tasks => tasks.map(task => ({
+      ...task,
+      title: task.id === id ? newTaskTitle : task.title
+    })));
   }
 
   function handleToggleTaskDone(id: number) {
@@ -39,6 +52,7 @@ export function Home() {
       <TasksList 
         tasks={tasks} 
         toggleTaskDone={handleToggleTaskDone}
+        editTask={handleEditTask}
         removeTask={(id: number) => Alert.alert(
             "Remover item",
             "Tem certeza que você deseja remover esse item?",
