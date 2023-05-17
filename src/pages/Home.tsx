@@ -10,8 +10,7 @@ export function Home() {
 
   function handleAddTask(newTaskTitle: string) {
     if (tasks.find(task => task.title === newTaskTitle)){
-      Alert.alert("Task já cadastrada", "Você não pode cadastrar uma task com o mesmo nome");
-      return;
+      return Alert.alert("Task já cadastrada", "Você não pode cadastrar uma task com o mesmo nome")
     }
     setTasks(tasks => [...tasks, {
       id: new Date().getTime(),
@@ -40,7 +39,18 @@ export function Home() {
       <TasksList 
         tasks={tasks} 
         toggleTaskDone={handleToggleTaskDone}
-        removeTask={handleRemoveTask} 
+        removeTask={(id: number) => Alert.alert(
+            "Remover item",
+            "Tem certeza que você deseja remover esse item?",
+            [{
+              text: 'Não',
+              onPress: () => console.log(`cancel: remover a taks:${id}`),
+              style: 'cancel',
+            },
+            {
+              text: 'Sim',
+              onPress: () => handleRemoveTask(id)
+            }])}
       />
     </View>
   )
